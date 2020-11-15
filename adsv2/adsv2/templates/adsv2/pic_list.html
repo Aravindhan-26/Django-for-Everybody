@@ -36,6 +36,7 @@
         console.log('Requesting JSON');
         $.post(url, function (data) {
             $('#unfav_star_'+ad_id).toggle();
+            ls
             $('#fav_star_'+ad_id).toggle();
         }).fail(function (xhr) {
             alert('Url failed with '+xhr.status+' '+url);
