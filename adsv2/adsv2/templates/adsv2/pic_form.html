@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load sizify %}
+{% block content %}
+<div class="jumbotron container">
+    <h2>Create Ad</h2>
+    <form class="uniForm" id="upload_form" enctype="multipart/form-data" method="post">
+        {{form| crispy}}
+        {% csrf_token %}
+        <input type="submit" value="Submit">
+        <input type="submit" value="Cancel" onclick="window.location.href='{% url 'ads_all' %}';return false;">
+    </form>
+</div>
+<script>
+    $("#upload_form").submit(function() {
+        alert('started');
+      console.log('Checking file size');
+      if (window.File && window.FileReader && window.FileList && window.Blob) {
+          var file = $('#id_picture')[0].files[0];
+          if (file && file.size > 2097152 ) {
+              alert("File " + file.name + " of type " + file.type + " must be < 2.0MB");
+          return false;
+        }
+      }
+    });
+</script>
+{% endblock %}

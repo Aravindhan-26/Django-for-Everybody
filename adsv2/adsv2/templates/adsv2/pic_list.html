@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron container">
+    <h1>Ads</h1>
+    <ul>
+        {% for ad in ad_list %}
+            <li>
+                <a href="{% url 'ad_detail' ad.id %}" >{{ad.title}}</a>
+                {% if ad.owner == request.user %}
+                <a href="{% url 'ad_edit' ad.id %}">Edit</a> | <a href="{% url 'ad_delete' ad.id %}">Delete</a>
+                {% endif %} 
+
+                {% if request.user.is_authenticated %}
+                <a href="#" onclick="favPost('{% url 'ad_unfav' ad.id%}', {{ ad.id }});return false;" id="fav_star_{{ad.id}}" {% if ad.id not in fav %}style="display: none;" {% endif %}>
+                    <span class="fa-stack" style="vertical-align: middle;">
+                        <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
+                        <!-- <i class="fa fa-star-o fa-stack-1x"></i> -->
+                    </span>
+                </a>
+                <a href="#" onclick="favPost('{% url 'ad_fav' ad.id%}', {{ ad.id }});return false;" id="unfav_star_{{ad.id}}" {% if ad.id in fav %} style="display: none;" {% endif %}>
+                    <span class="fa-stack" style="vertical-align: middle;">
+                    <i class="fa fa-star fa-stack-1x"></i>
+                        <!-- <i class="fa fa-star-o fa-stack-1x"></i> -->
+                    </span>
+                </a>
+                {% endif %}
+            </li>
+        {% empty %}
+        <p>There are no ads to show.</p>
+        {% endfor %}
+    </ul>
+</div>
+<script>
+    function favPost(url, ad_id){
+        console.log('Requesting JSON');
+        $.post(url, function (data) {
+            $('#unfav_star_'+ad_id).toggle();
+            $('#fav_star_'+ad_id).toggle();
+        }).fail(function (xhr) {
+            alert('Url failed with '+xhr.status+' '+url);
+        });
+    }
+</script>
+{% endblock %}
