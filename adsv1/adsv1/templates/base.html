@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,">
+        <meta name="dj4e" content="20c1945eae4b9868cbbfd09675f7d76e">
+        <meta name="dj4e" content="0ad5292c158f3924f8b480367fcbeb94">
+        <meta name="dj4e-code" content="42160162061418">
+        <title>Aravindhan's Ads V1</title>
+        <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-primary navbar-expand-sm fixed-top">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand mr-auto" href="#">Ads</a>
+                <div class="collapse navbar-collapse" id="Navbar">
+                    <ul class="navbar-nav">
+                        {% url 'ads_all' as ads %}
+                        {% url 'ad_create' as create %}
+                        {% url 'login' as login %}
+                        {% url 'signup' as signup %}
+                        <li class="nav-item {% if request.get_full_path == ads %}active{% endif %}"><a href="{% url 'ads_all'%}" class="nav-link">Home</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item {% if request.get_full_path == create %}active{% endif %}"><a href="{% url 'ad_create' %}" class="nav-link">Create Ad</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">{{request.user}}</a></li>
+                        <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                        {% else %}
+                        <li class="nav-item {% if request.get_full_path == login %}active{% endif %}"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                        <li class="nav-item {% if request.get_full_path == signup %}active{% endif %}"><a href="{% url 'signup' %}" class="nav-link">Signup</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <hr>
+        {% block content %}
+        {% endblock %}
+    </body>
+    <script src="{% static 'jquery.slim.min.js' %}"></script>
+    <script src="{% static 'popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+</html>

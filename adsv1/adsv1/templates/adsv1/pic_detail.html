@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container jumbotron">
+    <h1>{{pic.title}}</h1>
+    <p>{{pic.text}}</p>
+    <p>Price: Rs.{{pic.price}}</p>
+    <img alt="Ad Pic" src="{% url 'ad_pic' pk=pic.id %}">
+    <p> ({{ pic.updated_at|naturaltime }}) 
+        <a href="{% url 'ad_edit' pic.id %}">Edit</a> | 
+        <a href="{% url 'ad_delete' pic.id %}">Delete</a>
+    </p>
+    <form action="{% url 'comment_create' pic.id %}" method="post">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="Submit">
+        <input type="submit" value="All Ads" onclick="window.location.href='{% url 'ads_all' %}';return false;">
+    </form>
+    {% for comment in comments %}
+    <p>
+        {{comment.text}} ({{comment.updated_at | naturaltime}})
+        {% if comment.owner == request.user %}
+            <a href="{% url 'comment_delete' comment.id %}">Delete</a>
+        {% endif %}
+    </p>
+    {% endfor %}
+</div>
+
+{% endblock %}
