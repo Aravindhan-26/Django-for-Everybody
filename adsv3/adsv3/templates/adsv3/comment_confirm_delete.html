@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container jumbotron">
+    <p>Are you sure to delete the comment {{comment.text}}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Yes, delete.">
+        <input type="submit" value="Cancel" onclick="window.location.href='{% url 'ads_all' %}'; return false;">
+    </form>
+</div>
+{% endblock %}
